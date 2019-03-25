@@ -12,11 +12,15 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import com.everis.bmw.app.entity.Car;
+import com.everis.bmw.app.exceptions.CarNotFoundException;
 
 @Path("cars")
 @Produces(MediaType.APPLICATION_JSON)
@@ -24,6 +28,9 @@ public class CarResource {
 	
 	@Inject
 	private CarService carService;
+	
+	@Context
+	UriInfo uriInfo;
 	
 	@GET
 	public Response getAllCars() {
@@ -42,7 +49,7 @@ public class CarResource {
 		try {
 			Car car = this.carService.getCar(id);
 			response =  Response.status(Status.OK).entity(car).build();
-		} catch (Exception e) {
+		} catch (CarNotFoundException e) {
 			response = Response.status(Status.NOT_FOUND).build();
 		}
 		return response;
@@ -51,15 +58,30 @@ public class CarResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createCar(Car car) {
-		Car createdCar = this.carService.createCar(car);
-		return Response.status(Status.CREATED).entity(createdCar).build();
+		Car carAux;
+		try {
+			carAux = carService.getCar(car.getId());
+		} catch (CarNotFoundException e) {
+			carAux = this.carService.createCar(car);
+			UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+			uriBuilder.path(carAux.getId().toString());
+			return Response.created(uriBuilder.build()).build();
+		}
+		return Response.status(Status.CONFLICT).entity(carAux).build();
+		
 	}
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateCar(Car car) {
-		Car updatedCar = this.carService.updateCar(car);
-		return Response.status(Status.OK).entity(updatedCar).build();
+		Response response;
+		try {
+			Car updatedCar = this.carService.updateCar(car);
+			response = Response.status(Status.OK).entity(updatedCar).build();
+		} catch (CarNotFoundException e) {
+			response = Response.status(Status.NOT_FOUND).build();
+		}
+		return response;
 	}
 
 	@DELETE
@@ -67,6 +89,6 @@ public class CarResource {
 	public Response deleteUser(@PathParam("id")UUID id) {
 		Car car = (Car) getCarById(id).getEntity();
 		this.carService.deleteCar(car);
-		return Response.status(Status.OK).entity(car).build();
+		return Response.status(Status.NO_CONTENT).build();
 	}
 }
