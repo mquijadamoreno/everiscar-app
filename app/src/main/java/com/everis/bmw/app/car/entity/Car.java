@@ -29,30 +29,30 @@ public class Car implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID", nullable = false, unique = true)
-	@NotNull(message = "id field cannot be null")
+	@NotNull(message = "Id field cannot be null")
 	private UUID id;
 
 	@Column(name = "BRAND", nullable = false)
-	@NotEmpty(message = "brand field cannot be null or empty")
+	@NotEmpty(message = "Brand field cannot be null or empty")
 	private String brand;
 
 	@Column(name = "REGISTRATION", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	@NotNull(message = "registration date cannot be null")
+	@NotNull(message = "Registration date cannot be null")
 	private Timestamp registration;
 
 	@Column(name = "COUNTRY", nullable = false)
-	@NotEmpty(message = "country field cannot be null or empty")
+	@NotEmpty(message = "Country field cannot be null or empty")
 	private String country;
 
 	@Column(name = "CREATED_AT", nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	@NotNull(message = "created_at date cannot be null")
+	@NotNull(message = "Created_at date cannot be null")
 	private Timestamp created_at;
 
 	@Column(name = "LAST_UPDATED", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	@NotNull(message = "last_updated date cannot be null")
+	@NotNull(message = "Last_updated date cannot be null")
 	private Timestamp last_updated;
 
 	public UUID getId() {
