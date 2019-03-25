@@ -2,6 +2,7 @@ package com.everis.bmw.app.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -39,7 +40,7 @@ public class Car implements Serializable {
 	@Column(name = "REGISTRATION", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull(message = "registration date cannot be null")
-	private Timestamp registration;
+	private Date registration;
 
 	@Column(name = "COUNTRY", nullable = false)
 	@NotEmpty(message = "country field cannot be null or empty")
@@ -48,12 +49,12 @@ public class Car implements Serializable {
 	@Column(name = "CREATED_AT", nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull(message = "created_at date cannot be null")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name = "LAST_UPDATED", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull(message = "last_updated date cannot be null")
-	private Timestamp lastUpdated;
+	private Date lastUpdated;
 
 	public UUID getId() {
 		return id;
@@ -71,11 +72,11 @@ public class Car implements Serializable {
 		this.brand = brand;
 	}
 
-	public Timestamp getRegistration() {
+	public Date getRegistration() {
 		return registration;
 	}
 
-	public void setRegistration(Timestamp registration) {
+	public void setRegistration(Date registration) {
 		this.registration = registration;
 	}
 
@@ -87,19 +88,19 @@ public class Car implements Serializable {
 		this.country = country;
 	}
 	
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Timestamp getLastUpdated() {
+	public Date getLastUpdated() {
 		return lastUpdated;
 	}
 
-	public void setLastUpdated(Timestamp lastUpdated) {
+	public void setLastUpdated(Date lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
 	
