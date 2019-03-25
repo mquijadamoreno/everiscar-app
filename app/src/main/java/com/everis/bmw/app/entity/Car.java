@@ -48,12 +48,12 @@ public class Car implements Serializable {
 	@Column(name = "CREATED_AT", nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull(message = "created_at date cannot be null")
-	private Timestamp created_at;
+	private Timestamp createdAt;
 
 	@Column(name = "LAST_UPDATED", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull(message = "last_updated date cannot be null")
-	private Timestamp last_updated;
+	private Timestamp lastUpdated;
 
 	public UUID getId() {
 		return id;
@@ -86,30 +86,31 @@ public class Car implements Serializable {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-
-	public Timestamp getCreated_at() {
-		return created_at;
+	
+	public Timestamp getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreated_at(Timestamp created_at) {
-		this.created_at = created_at;
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public Timestamp getLast_updated() {
-		return last_updated;
+	public Timestamp getLastUpdated() {
+		return lastUpdated;
 	}
 
-	public void setLast_updated(Timestamp last_updated) {
-		this.last_updated = last_updated;
+	public void setLastUpdated(Timestamp lastUpdated) {
+		this.lastUpdated = lastUpdated;
 	}
 	
 	public Car update(Car car) {
 		this.brand = car.getBrand();
 		this.country = car.getCountry();
-		this.created_at = car.getCreated_at();
+		this.createdAt = car.getCreatedAt();
 		this.registration = car.getRegistration();
-		this.last_updated = car.getLast_updated();
+		this.lastUpdated = car.getLastUpdated();
 		return this;
 	}
+
 
 }

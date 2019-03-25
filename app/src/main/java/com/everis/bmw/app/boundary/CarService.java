@@ -54,8 +54,8 @@ public class CarService {
 		return carToUpdate;
 	}
 	
-	public void deleteCar(Car car) {
-		Car carToRemove = getCar(car.getId());
+	public void deleteCar(UUID id) {
+		Car carToRemove = getCar(id);
 		em.remove(carToRemove);
 	}
 }

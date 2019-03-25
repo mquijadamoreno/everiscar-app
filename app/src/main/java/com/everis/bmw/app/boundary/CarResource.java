@@ -87,8 +87,15 @@ public class CarResource {
 	@DELETE
 	@Path("{id}")
 	public Response deleteUser(@PathParam("id")UUID id) {
-		Car car = (Car) getCarById(id).getEntity();
-		this.carService.deleteCar(car);
-		return Response.status(Status.NO_CONTENT).build();
+		Response response;
+		if(id == null)
+			response = Response.status(Status.BAD_REQUEST).build();
+		try {
+			this.carService.deleteCar(id);
+			response =  Response.status(Status.NO_CONTENT).build();
+		} catch (CarNotFoundException e) {
+			response = Response.status(Status.NOT_FOUND).build();
+		}
+		return response;
 	}
 }
