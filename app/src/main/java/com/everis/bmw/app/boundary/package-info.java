@@ -5,4 +5,4 @@
  * @author mquijamo
  *
  */
-package com.everis.bmw.app.car.entity;
+package com.everis.bmw.app.boundary;
