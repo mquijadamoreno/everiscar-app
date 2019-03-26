@@ -13,8 +13,6 @@ import com.everis.bmw.app.entity.Car;
 import com.everis.bmw.app.exceptions.CarNotFoundException;
 import com.everis.bmw.app.exceptions.CarStateNotValidException;
 
-
-
 @Stateless
 public class CarService {
 	
@@ -23,7 +21,10 @@ public class CarService {
 
 	private final Logger LOG = Logger.getLogger(this.getClass().getName());
 	
-	public Car getCar(UUID id) {
+	public Car getCar(String id) {
+		if(id == null) 
+			return null;
+		
 		Car car = em.find(Car.class, id);
 		if(car == null) {
 			throw new CarNotFoundException("Car not found");
@@ -39,12 +40,14 @@ public class CarService {
 	
 	public Car createCar(Car car) {
 		try {
+			car.setId(UUID.randomUUID().toString());
 			this.em.persist(car);
 			this.em.flush();
 			this.em.refresh(car);
 		} catch(IllegalStateException exception) {
 			throw new CarStateNotValidException("Car state not valid");
 		}
+		
 		return car;
 	}
 	
@@ -54,7 +57,7 @@ public class CarService {
 		return carToUpdate;
 	}
 	
-	public void deleteCar(UUID id) {
+	public void deleteCar(String id) {
 		Car carToRemove = getCar(id);
 		em.remove(carToRemove);
 	}

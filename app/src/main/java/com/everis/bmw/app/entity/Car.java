@@ -1,14 +1,10 @@
 package com.everis.bmw.app.entity;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -17,6 +13,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "CARS")
@@ -28,17 +26,17 @@ public class Car implements Serializable {
 	public static final String CAR_GET_ALL_NAMED_QUERY = "getAllCars";
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID", nullable = false, unique = true)
 	@NotNull(message = "id field cannot be null")
-	private UUID id;
+	private String id;
 
 	@Column(name = "BRAND", nullable = false)
 	@NotEmpty(message = "brand field cannot be null or empty")
 	private String brand;
 
 	@Column(name = "REGISTRATION", nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@NotNull(message = "registration date cannot be null")
 	private Date registration;
 
@@ -47,20 +45,22 @@ public class Car implements Serializable {
 	private String country;
 
 	@Column(name = "CREATED_AT", nullable = false, updatable = false)
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@NotNull(message = "created_at date cannot be null")
 	private Date createdAt;
 
 	@Column(name = "LAST_UPDATED", nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@NotNull(message = "last_updated date cannot be null")
 	private Date lastUpdated;
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
