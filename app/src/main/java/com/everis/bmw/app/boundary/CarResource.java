@@ -1,9 +1,9 @@
 package com.everis.bmw.app.boundary;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.logging.Logger;
 
-import javax.inject.Inject;
+import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -26,11 +26,13 @@ import com.everis.bmw.app.exceptions.CarNotFoundException;
 @Produces(MediaType.APPLICATION_JSON)
 public class CarResource {
 	
-	@Inject
+	@EJB
 	private CarService carService;
 	
 	@Context
 	UriInfo uriInfo;
+	
+	private final Logger LOG = Logger.getLogger(this.getClass().getName());
 	
 	@GET
 	public Response getAllCars() {
@@ -40,7 +42,7 @@ public class CarResource {
 	
 	@GET
 	@Path("{id}")
-	public Response getCarById(@PathParam("id" )UUID id) {
+	public Response getCarById(@PathParam("id" )String id) {
 		
 		Response response;
 		
@@ -59,15 +61,14 @@ public class CarResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createCar(Car car) {
 		Car carAux;
-		try {
-			carAux = carService.getCar(car.getId());
-		} catch (CarNotFoundException e) {
+		if(carService.getCar(car.getId()) == null) {
 			carAux = this.carService.createCar(car);
 			UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
 			uriBuilder.path(carAux.getId().toString());
-			return Response.created(uriBuilder.build()).build();
+			return Response.created(uriBuilder.build()).entity(carAux).build();
+		} else {
+			return Response.status(Status.BAD_REQUEST).build();
 		}
-		return Response.status(Status.CONFLICT).entity(carAux).build();
 		
 	}
 	
@@ -86,7 +87,7 @@ public class CarResource {
 
 	@DELETE
 	@Path("{id}")
-	public Response deleteUser(@PathParam("id")UUID id) {
+	public Response deleteUser(@PathParam("id")String id) {
 		Response response;
 		if(id == null)
 			response = Response.status(Status.BAD_REQUEST).build();
