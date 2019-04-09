@@ -18,12 +18,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "CARS")
-@NamedQueries({ @NamedQuery(name = Car.CAR_GET_ALL_NAMED_QUERY, query = "SELECT c FROM Car c") })
+@NamedQueries({ 
+	@NamedQuery(name = Car.CAR_GET_ALL_NAMED_QUERY, query = "SELECT c FROM Car c"), 
+	@NamedQuery(name = Car.CAR_GET_CAR_COUNT, query = "SELECT COUNT(c) FROM Car c")})
 public class Car implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	public static final String CAR_GET_ALL_NAMED_QUERY = "getAllCars";
+	public static final String CAR_GET_CAR_COUNT = "getCarCount";
 
 	@Id
 	@Column(name = "ID", nullable = false, unique = true)
@@ -107,9 +110,7 @@ public class Car implements Serializable {
 	public Car update(Car car) {
 		this.brand = car.getBrand();
 		this.country = car.getCountry();
-		this.createdAt = car.getCreatedAt();
-		this.registration = car.getRegistration();
-		this.lastUpdated = car.getLastUpdated();
+		this.lastUpdated = new Date();
 		return this;
 	}
 
