@@ -22,6 +22,12 @@ import javax.ws.rs.core.UriInfo;
 import com.everis.bmw.app.entity.Car;
 import com.everis.bmw.app.exceptions.CarNotFoundException;
 
+/**
+ * CarResource class.
+ * 
+ * @author Miguel Quijada Moreno
+ *
+ */
 @Path("cars")
 @Produces(MediaType.APPLICATION_JSON)
 public class CarResource {
@@ -34,69 +40,119 @@ public class CarResource {
 	
 	private final Logger LOG = Logger.getLogger(this.getClass().getName());
 	
+	/**
+	 * Get all the cars.
+	 * @return Returns the Response with the list of the cars.
+	 */
 	@GET
 	public Response getAllCars() {
+		LOG.info("Entering getAllCars() method.."); 
 		List<Car> cars = this.carService.getCars();
+		LOG.info("Returning from getAllCars() method..., HTTP CODE -> OK"); 
 		return Response.status(Status.OK).entity(cars).build();
 	}
 	
+	
+	/**
+	 * Get an specific car distinguished by its id.
+	 * @param id Parameter used to search the car.
+	 * @return Returns the response with the car if it exists with the appropiated HTTP code.
+	 */
 	@GET
 	@Path("{id}")
-	public Response getCarById(@PathParam("id" )String id) {
+	public Response getCarById(@PathParam("id")String id) {
 		
+		LOG.info("Entering getCarById(id) method with id = " + id + " ..");
 		Response response;
-		
+		String logInfo;
 		if(id == null)
 			response = Response.status(Status.BAD_REQUEST).build();
+			logInfo = "HTTP CODE -> BAD_REQUEST";
 		try {
 			Car car = this.carService.getCar(id);
 			response =  Response.status(Status.OK).entity(car).build();
+			logInfo = "HTTP CODE -> OK";
 		} catch (CarNotFoundException e) {
 			response = Response.status(Status.NOT_FOUND).build();
+			logInfo = "HTTP CODE -> NOT_FOUND";
 		}
+		LOG.info("Returning from getCarById(id) method, " + logInfo);
 		return response;
 	}
 	
+	/**
+	 * Post method to request the creation of the car.
+	 * @param car Parameter given with the data needed to create the car.
+	 * @return Returns the response with the car data if was succesfully created.
+	 * 			If doesnt, the response will contain the appropiated HTTP response. 
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createCar(Car car) {
+		LOG.info("Entering createCar(car) method..");
 		Car carAux;
 		if(carService.getCar(car.getId()) == null) {
 			carAux = this.carService.createCar(car);
 			UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
 			uriBuilder.path(carAux.getId().toString());
+			LOG.info("Returning from getCarById(car) method, HTTP CODE -> CREATED");
 			return Response.created(uriBuilder.build()).entity(carAux).build();
 		} else {
+			LOG.info("Returning from getCarById(car) method, HTTP CODE -> BAD_REQUEST");
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 		
 	}
 	
+	/**
+	 * Put method used to update an existing car within the database.
+	 * @param car Parameter that represents the car with the updated data.
+	 * @return Returns the Response with the car data if it was succesfully updated.
+	 * 		If doesnt, the response will contain the appropiate HTTP response. 
+	 */
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateCar(Car car) {
+		LOG.info("Entering updateCar(car) method..");
+		String logInfo;
 		Response response;
 		try {
 			Car updatedCar = this.carService.updateCar(car);
 			response = Response.status(Status.OK).entity(updatedCar).build();
+			logInfo = "HTTP CODE -> OK";
 		} catch (CarNotFoundException e) {
 			response = Response.status(Status.NOT_FOUND).build();
+			logInfo = "HTTP CODE -> NOT_FOUND";
 		}
+		LOG.info("Returning from updateCar(Car) method, " + logInfo);
 		return response;
 	}
 
+	/**
+	 * Delete method used to delete an instance of a car from the database.
+	 * @param id Parameter that represents the id of the car to be deleted.
+	 * @return Returns the response with the car deleted if found. If doesnt,
+	 * 		it returns the appropiated HTTP code.
+	 */
 	@DELETE
 	@Path("{id}")
-	public Response deleteUser(@PathParam("id")String id) {
+	public Response deleteCar(@PathParam("id")String id) {
+		LOG.info("Entering deleteCar(id) with id = " + id + " ..");
+		String logInfo;
 		Response response;
-		if(id == null)
+		if(id == null) {
 			response = Response.status(Status.BAD_REQUEST).build();
+			logInfo = "HTTP CODE -> BAD_REQUEST";
+		}
 		try {
 			this.carService.deleteCar(id);
 			response =  Response.status(Status.NO_CONTENT).build();
+			logInfo = "HTTP CODE -> NO_CONTENT";
 		} catch (CarNotFoundException e) {
+			logInfo = "HTTP CODE -> NOT_FOUND";
 			response = Response.status(Status.NOT_FOUND).build();
 		}
+		LOG.info("Returning from deleteCar(id), " + logInfo);
 		return response;
 	}
 }

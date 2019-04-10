@@ -14,8 +14,6 @@ import com.everis.bmw.app.boundary.CarResource;
 @ApplicationPath("api/v1")
 public class JAXRSConfiguration extends Application {
 	
-
-
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> classes = new HashSet<>();
