@@ -12,6 +12,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,24 +32,29 @@ import com.everis.bmw.app.exceptions.CarNotFoundException;
 @Path("cars")
 @Produces(MediaType.APPLICATION_JSON)
 public class CarResource {
-	
+
 	@EJB
 	private CarService carService;
-	
+
 	@Context
 	UriInfo uriInfo;
-	
+
 	private final Logger LOG = Logger.getLogger(this.getClass().getName());
-	
 	/**
 	 * Get all the cars.
 	 * @return Returns the Response with the list of the cars.
 	 */
+
 	@GET
-	public Response getAllCars() {
-		LOG.info("Entering getAllCars() method.."); 
-		List<Car> cars = this.carService.getCars();
-		LOG.info("Returning from getAllCars() method..., HTTP CODE -> OK"); 
+	public Response getAllCars(@QueryParam("start") int start, @QueryParam("size") int size) {
+		LOG.info("Called getAllCars with the params  => start:" + start + " and size:" + size);
+		List<Car> cars;
+		if (start >= 0 && size > 0) {
+			cars = this.carService.getCarsPaginated(start, size);
+		} else {
+			cars = this.carService.getCars();
+		}
+		LOG.info("Returning from getAllCars with the collection size of:"+cars.size());
 		return Response.status(Status.OK).entity(cars).build();
 	}
 	
@@ -58,6 +64,13 @@ public class CarResource {
 	 * @param id Parameter used to search the car.
 	 * @return Returns the response with the car if it exists with the appropiated HTTP code.
 	 */
+	@GET
+	@Path("/count")
+	public Response getCollectionSize() {
+		Long count = this.carService.getCarsCount();
+		return Response.status(Status.OK).entity(count).build();
+	}
+
 	@GET
 	@Path("{id}")
 	public Response getCarById(@PathParam("id")String id) {
@@ -91,7 +104,7 @@ public class CarResource {
 	public Response createCar(Car car) {
 		LOG.info("Entering createCar(car) method..");
 		Car carAux;
-		if(carService.getCar(car.getId()) == null) {
+		if (carService.getCar(car.getId()) == null) {
 			carAux = this.carService.createCar(car);
 			UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
 			uriBuilder.path(carAux.getId().toString());
@@ -101,7 +114,7 @@ public class CarResource {
 			LOG.info("Returning from getCarById(car) method, HTTP CODE -> BAD_REQUEST");
 			return Response.status(Status.BAD_REQUEST).build();
 		}
-		
+
 	}
 	
 	/**
