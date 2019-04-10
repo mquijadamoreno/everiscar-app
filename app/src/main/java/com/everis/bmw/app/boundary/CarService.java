@@ -56,9 +56,6 @@ public class CarService {
 	public Car createCar(Car car) {
 		try {
 			car.setId(UUID.randomUUID().toString());
-			car.setCreatedAt(new Date());
-			car.setLastUpdated(new Date());
-			car.setRegistration(new Date());
 			this.em.persist(car);
 			this.em.flush();
 			this.em.refresh(car);

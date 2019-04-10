@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,7 +41,7 @@ public class Car implements Serializable {
 
 	@Column(name = "REGISTRATION", nullable = false)
 	@Temporal(TemporalType.DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@NotNull(message = "registration date cannot be null")
 	private Date registration;
 
@@ -49,16 +51,26 @@ public class Car implements Serializable {
 
 	@Column(name = "CREATED_AT", nullable = false, updatable = false)
 	@Temporal(TemporalType.DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-	@NotNull(message = "created_at date cannot be null")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date createdAt;
 
 	@Column(name = "LAST_UPDATED", nullable = false)
 	@Temporal(TemporalType.DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-	@NotNull(message = "last_updated date cannot be null")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date lastUpdated;
 
+	@PrePersist
+	private void initEntity() {
+		this.createdAt = new Date();
+		this.lastUpdated = new Date();
+	}
+	
+	@PreUpdate
+	private void updateEntity() {
+		this.lastUpdated = new Date();
+	}
+	
+	
 	public String getId() {
 		return id;
 	}
@@ -110,7 +122,6 @@ public class Car implements Serializable {
 	public Car update(Car car) {
 		this.brand = car.getBrand();
 		this.country = car.getCountry();
-		this.lastUpdated = new Date();
 		return this;
 	}
 
