@@ -1,6 +1,5 @@
 package com.everis.bmw.app.boundary;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -38,6 +37,10 @@ public class CarService {
 	 */
 	public Car getCar(String id) throws CarNotFoundException {
 		LOG.info("Entering getCar(id) method with id " + id + " ..");
+		if (id == null) {
+			LOG.info("Returning from getCar(id) method, CarNotFoundException thrown..");
+			throw new CarNotFoundException("Car not found");
+		}
 		Car car = em.find(Car.class, id);
 		if (car == null) {
 			LOG.info("Returning from getCar(id) method, CarNotFoundException thrown..");
@@ -47,12 +50,27 @@ public class CarService {
 		return car;
 	}
 
+	/**
+	 * Method to get the size of the car collection.
+	 * 
+	 * @return Returns the size of the collection stored on the database.
+	 */
 	public long getCarsCount() {
 		Query getCarCount = em.createNamedQuery(Car.CAR_GET_CAR_COUNT, Car.class);
 		long count = (long) getCarCount.getSingleResult();
 		return count;
 	}
-	
+
+	/**
+	 * Method to get a determined list of cars depending on the offset and max given
+	 * to the method.
+	 * 
+	 * @param start Parameter that represents the number of elements the search will
+	 *              ignore.
+	 * @param size  Parameter that represents the maximum number of elements the
+	 *              search will retrieve.
+	 * @return Returns the list of the cars with the given parameters.
+	 */
 	public List<Car> getCarsPaginated(int start, int size) {
 		TypedQuery<Car> getCarsToPaginate = em.createNamedQuery(Car.CAR_GET_ALL_NAMED_QUERY, Car.class);
 		int offset = (start - 1) * size;
@@ -62,9 +80,10 @@ public class CarService {
 
 	/**
 	 * Method to retrieve the list of all cars from the database.
+	 * 
 	 * @return Returns the list with the cars retrieved.
 	 */
-	public List<Car> getCars(){
+	public List<Car> getCars() {
 		LOG.info("Entering getAllCars() method..");
 		TypedQuery<Car> getAllCars = em.createNamedQuery(Car.CAR_GET_ALL_NAMED_QUERY, Car.class);
 		List<Car> cars = getAllCars.getResultList();
@@ -73,19 +92,23 @@ public class CarService {
 	}
 
 	/**
-	 * Method to create a car in the database. Id is generated in this method before persisting.
+	 * Method to create a car in the database. Id is generated in this method before
+	 * persisting.
+	 * 
 	 * @param car Parameter that represents the data of the car.
 	 * @return Returns the car if created.
-	 * @throws CarStateNotValidException Exception thrown if the state of the cars is invalid after persisting.
+	 * @throws CarStateNotValidException Exception thrown if the state of the cars
+	 *                                   is invalid after persisting.
 	 */
 	public Car createCar(Car car) throws CarStateNotValidException {
 		LOG.info("Entering createCar(car) method..");
 		try {
 			car.setId(UUID.randomUUID().toString());
+			LOG.info("Registration Date received : " + car.getRegistration());
 			this.em.persist(car);
 			this.em.flush();
 			this.em.refresh(car);
-		} catch(IllegalStateException exception) {
+		} catch (IllegalStateException exception) {
 			LOG.info("Returning from createCar(car) method, CarStateNotValidException thrown..");
 			throw new CarStateNotValidException("Car state not valid");
 		}
@@ -99,9 +122,9 @@ public class CarService {
 	 * @param car Parameter that represents the data of a car to be updated.
 	 * @return Returns the car with the updated fields if found.
 	 */
-	public Car updateCar(Car car) {
+	public Car updateCar(String id, Car car) {
 		LOG.info("Entering updateCar(car) method..");
-		Car carToUpdate = getCar(car.getId());
+		Car carToUpdate = getCar(id);
 		carToUpdate.update(car);
 		LOG.info("Returning from updateCar() method, Car succesfully updated..");
 		return carToUpdate;

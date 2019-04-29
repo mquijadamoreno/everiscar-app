@@ -1,7 +1,8 @@
 package com.everis.bmw.app.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +12,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -40,34 +39,32 @@ public class Car implements Serializable {
 	private String brand;
 
 	@Column(name = "REGISTRATION", nullable = false)
-	@Temporal(TemporalType.DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="UTC")
 	@NotNull(message = "registration date cannot be null")
-	private Date registration;
+	private LocalDate registration;
 
 	@Column(name = "COUNTRY", nullable = false)
 	@NotEmpty(message = "country field cannot be null or empty")
 	private String country;
 
 	@Column(name = "CREATED_AT", nullable = false, updatable = false)
-	@Temporal(TemporalType.DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	private Date createdAt;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="UTC")
+	private LocalDate createdAt;
 
 	@Column(name = "LAST_UPDATED", nullable = false)
-	@Temporal(TemporalType.DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	private Date lastUpdated;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="UTC")
+	private LocalDate lastUpdated;
 
 	@PrePersist
 	private void initEntity() {
-		this.createdAt = new Date();
-		this.lastUpdated = new Date();
+		this.createdAt = LocalDate.now(ZoneId.of("UTC"));
+		this.lastUpdated = LocalDate.now(ZoneId.of("UTC"));
+		
 	}
 	
 	@PreUpdate
 	private void updateEntity() {
-		this.lastUpdated = new Date();
+		this.lastUpdated = LocalDate.now(ZoneId.of("UTC"));
 	}
 	
 	
@@ -87,11 +84,11 @@ public class Car implements Serializable {
 		this.brand = brand;
 	}
 
-	public Date getRegistration() {
+	public LocalDate getRegistration() {
 		return registration;
 	}
 
-	public void setRegistration(Date registration) {
+	public void setRegistration(LocalDate registration) {
 		this.registration = registration;
 	}
 
@@ -103,19 +100,19 @@ public class Car implements Serializable {
 		this.country = country;
 	}
 	
-	public Date getCreatedAt() {
+	public LocalDate getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(LocalDate createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Date getLastUpdated() {
+	public LocalDate getLastUpdated() {
 		return lastUpdated;
 	}
 
-	public void setLastUpdated(Date lastUpdated) {
+	public void setLastUpdated(LocalDate lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
 	

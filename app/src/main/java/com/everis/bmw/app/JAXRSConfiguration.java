@@ -11,6 +11,7 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 
 import com.everis.bmw.app.boundary.CarResource;
 import com.everis.bmw.app.utils.CorsFilter;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 @ApplicationPath("api/v1")
 public class JAXRSConfiguration extends Application {
@@ -36,7 +37,9 @@ public class JAXRSConfiguration extends Application {
     public Set<Object> getSingletons() {
         final Set<Object> instances = new HashSet<>();
         instances.add(new JacksonFeature());
+        instances.add(new JacksonJaxbJsonProvider());
         return instances;
     }
+    
 
 }
