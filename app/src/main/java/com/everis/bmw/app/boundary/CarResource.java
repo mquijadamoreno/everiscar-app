@@ -188,9 +188,7 @@ public class CarResource {
 				logInfo = "HTTP CODE -> NOT_FOUND";
 				response = Response.status(Status.NOT_FOUND).build();
 			}
-
 		}
-
 		LOG.info("Returning from deleteCar(id), " + logInfo);
 		return response;
 	}

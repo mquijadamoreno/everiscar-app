@@ -3,6 +3,7 @@ package com.everis.bmw.app.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -39,32 +42,31 @@ public class Car implements Serializable {
 	private String brand;
 
 	@Column(name = "REGISTRATION", nullable = false)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="UTC")
 	@NotNull(message = "registration date cannot be null")
-	private LocalDate registration;
+	@Temporal(value = TemporalType.DATE)
+	private Date registration;
 
 	@Column(name = "COUNTRY", nullable = false)
 	@NotEmpty(message = "country field cannot be null or empty")
 	private String country;
 
 	@Column(name = "CREATED_AT", nullable = false, updatable = false)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="UTC")
-	private LocalDate createdAt;
+	@Temporal(value = TemporalType.DATE)
+	private Date createdAt;
 
 	@Column(name = "LAST_UPDATED", nullable = false)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="UTC")
-	private LocalDate lastUpdated;
+	@Temporal(value = TemporalType.DATE)
+	private Date lastUpdated;
 
 	@PrePersist
-	private void initEntity() {
-		this.createdAt = LocalDate.now(ZoneId.of("UTC"));
-		this.lastUpdated = LocalDate.now(ZoneId.of("UTC"));
-		
+	private void prePersist() {
+		this.createdAt = new Date();
+		this.lastUpdated = new Date();
 	}
 	
 	@PreUpdate
-	private void updateEntity() {
-		this.lastUpdated = LocalDate.now(ZoneId.of("UTC"));
+	private void preUpdate() {
+		this.lastUpdated = new Date();
 	}
 	
 	
@@ -84,11 +86,11 @@ public class Car implements Serializable {
 		this.brand = brand;
 	}
 
-	public LocalDate getRegistration() {
+	public Date getRegistration() {
 		return registration;
 	}
 
-	public void setRegistration(LocalDate registration) {
+	public void setRegistration(Date registration) {
 		this.registration = registration;
 	}
 
@@ -100,19 +102,19 @@ public class Car implements Serializable {
 		this.country = country;
 	}
 	
-	public LocalDate getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(LocalDate createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public LocalDate getLastUpdated() {
+	public Date getLastUpdated() {
 		return lastUpdated;
 	}
 
-	public void setLastUpdated(LocalDate lastUpdated) {
+	public void setLastUpdated(Date lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
 	
