@@ -89,17 +89,20 @@ public class CarResource {
 		LOG.info("Entering getCarById(id) method with id = " + id + " ..");
 		Response response;
 		String logInfo;
-		if (id == null)
+		if (id == null) {
 			response = Response.status(Status.BAD_REQUEST).build();
-		logInfo = "HTTP CODE -> BAD_REQUEST";
-		try {
-			Car car = this.carService.getCar(id);
-			response = Response.status(Status.OK).entity(car).build();
-			logInfo = "HTTP CODE -> OK";
-		} catch (CarNotFoundException e) {
-			response = Response.status(Status.NOT_FOUND).build();
-			logInfo = "HTTP CODE -> NOT_FOUND";
+			logInfo = "HTTP CODE -> BAD_REQUEST";
+		} else {
+			try {
+				Car car = this.carService.getCar(id);
+				response = Response.status(Status.OK).entity(car).build();
+				logInfo = "HTTP CODE -> OK";
+			} catch (CarNotFoundException e) {
+				response = Response.status(Status.NOT_FOUND).build();
+				logInfo = "HTTP CODE -> NOT_FOUND";
+			}
 		}
+
 		LOG.info("Returning from getCarById(id) method, " + logInfo);
 		return response;
 	}
