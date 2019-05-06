@@ -10,6 +10,8 @@ import javax.ws.rs.core.Application;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 import com.everis.bmw.app.boundary.CarResource;
+import com.everis.bmw.app.exceptions.CarNotFoundExceptionMapper;
+import com.everis.bmw.app.exceptions.CarStateNotValidExceptionMapper;
 import com.everis.bmw.app.utils.CorsFilter;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
@@ -22,6 +24,10 @@ public class JAXRSConfiguration extends Application {
         //Resources
         classes.add(CarResource.class);
         classes.add(CorsFilter.class);
+        
+        //ExceptionMappers
+        classes.add(CarNotFoundExceptionMapper.class);
+        classes.add(CarStateNotValidExceptionMapper.class);
                        
         return classes;
     }

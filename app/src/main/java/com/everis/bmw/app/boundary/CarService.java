@@ -39,12 +39,12 @@ public class CarService {
 		LOG.info("Entering getCar(id) method with id " + id + " ..");
 		if (id == null) {
 			LOG.info("Returning from getCar(id) method, CarNotFoundException thrown..");
-			throw new CarNotFoundException("Car not found");
+			throw new CarNotFoundException("Error 404 - Car not found!");
 		}
 		Car car = em.find(Car.class, id);
 		if (car == null) {
 			LOG.info("Returning from getCar(id) method, CarNotFoundException thrown..");
-			throw new CarNotFoundException("Car not found");
+			throw new CarNotFoundException("Error 404 - Car not found!");
 		}
 		LOG.info("Returning from getCar(id) method, Car succesfully retrieved..");
 		return car;
@@ -55,11 +55,13 @@ public class CarService {
 	 * 
 	 * @return Returns the size of the collection stored on the database.
 	 */
+	
 	public long getCarsCount() {
-		Query getCarCount = em.createNamedQuery(Car.CAR_GET_CAR_COUNT, Car.class);
+		Query getCarCount = em.createQuery("SELECT COUNT(c) FROM Car c");
 		long count = (long) getCarCount.getSingleResult();
 		return count;
 	}
+	
 
 	/**
 	 * Method to get a determined list of cars depending on the offset and max given
@@ -108,9 +110,9 @@ public class CarService {
 			this.em.persist(car);
 			this.em.flush();
 			this.em.refresh(car);
-		} catch (IllegalStateException exception) {
+		} catch (Exception exception) {
 			LOG.info("Returning from createCar(car) method, CarStateNotValidException thrown..");
-			throw new CarStateNotValidException("Car state not valid");
+			throw new CarStateNotValidException("Error 400 - Car state not valid!");
 		}
 		LOG.info("Returning from createCar(car) method, Car succesfully created..");
 		return car;

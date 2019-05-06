@@ -119,7 +119,7 @@ public class CarResource {
 	public Response createCar(Car car) {
 		LOG.info("Entering createCar(car) method..");
 		Car carAux;
-		if (car.getId() == null) {
+		if (car != null && car.getId() == null) {
 			carAux = this.carService.createCar(car);
 			UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
 			uriBuilder.path(carAux.getId().toString());
@@ -148,7 +148,7 @@ public class CarResource {
 		String logInfo;
 		Response response;
 
-		if (!id.equals(car.getId())) {
+		if (car == null || car.getId() == null || !id.equals(car.getId())) {
 			logInfo = "HTTP CODE -> BAD_REQUEST";
 			response = Response.status(Status.BAD_REQUEST).build();
 		} else {

@@ -19,8 +19,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "CARS")
 @NamedQueries({ 
-	@NamedQuery(name = Car.CAR_GET_ALL_NAMED_QUERY, query = "SELECT c FROM Car c"), 
-	@NamedQuery(name = Car.CAR_GET_CAR_COUNT, query = "SELECT COUNT(c) FROM Car c")})
+	@NamedQuery(name = Car.CAR_GET_ALL_NAMED_QUERY, query = "SELECT c FROM Car c")})
 public class Car implements Serializable {
 
 	private static final long serialVersionUID = 1L;
