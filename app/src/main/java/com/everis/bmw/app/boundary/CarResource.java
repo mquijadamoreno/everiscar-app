@@ -23,14 +23,27 @@ import javax.ws.rs.core.UriInfo;
 import com.everis.bmw.app.entity.Car;
 import com.everis.bmw.app.exceptions.CarNotFoundException;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 /**
  * CarResource class.
  * 
  * @author Miguel Quijada Moreno
  *
  */
-@Path("cars")
+@Path("/cars")
 @Produces(MediaType.APPLICATION_JSON)
+@OpenAPIDefinition( info = @Info(
+		title = "Car Rest app",
+		version = "1.0",
+		description = "Rest api for car management"))
 public class CarResource {
 
 	@EJB
@@ -48,7 +61,11 @@ public class CarResource {
 	 */
 
 	@GET
-	public Response getAllCars(@QueryParam("start") int start, @QueryParam("size") int size) {
+	@Operation(summary = "Retrieve all cars.", responses = {
+			@ApiResponse(responseCode = "200", description = "The list with the cars.") })
+	public Response getAllCars(
+			@Parameter(description = "The array offset of the car list", required = true) @QueryParam("start") int start,
+			@Parameter(description = "The array size of the car list ", required = true) @QueryParam("size") int size) {
 		LOG.info("Entering getAllCars(start,size) with start: " + start + " and size: " + size + " ..");
 		List<Car> cars;
 		if (start >= 0 && size > 0) {
@@ -68,6 +85,8 @@ public class CarResource {
 	 */
 	@GET
 	@Path("/count")
+	@Operation(summary = "Get the cars collection's size", responses = {
+			@ApiResponse(responseCode = "200", description = "The size of the collection.") })
 	public Response getCollectionSize() {
 		LOG.info("Entering getCollectionSize() ..");
 		Long count = this.carService.getCarsCount();
@@ -84,8 +103,12 @@ public class CarResource {
 	 */
 	@GET
 	@Path("{id}")
-	public Response getCarById(@PathParam("id") String id) {
-
+	@Operation(summary = "Get car by Id", responses = {
+			@ApiResponse(responseCode = "200", description = "The car", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
+			@ApiResponse(responseCode = "400", description = "Bad Request on the id"),
+			@ApiResponse(responseCode = "404", description = "Car not found") })
+	public Response getCarById(
+			@Parameter(description = "The id of the car to be found", required = true) @PathParam("id") String id) {
 		LOG.info("Entering getCarById(id) method with id = " + id + " ..");
 		Response response;
 		String logInfo;
@@ -116,7 +139,11 @@ public class CarResource {
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createCar(Car car) {
+	@Operation(summary = "Create a car", responses = {
+			@ApiResponse(responseCode = "201", description = "The created car", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
+			@ApiResponse(responseCode = "400", description = "Bad Request on the car creation") })
+	public Response createCar(
+			@RequestBody(description = "The car data to be created", required = true, content = @Content(schema = @Schema(implementation = Car.class))) Car car) {
 		LOG.info("Entering createCar(car) method..");
 		Car carAux;
 		if (car != null && car.getId() == null) {
@@ -143,7 +170,13 @@ public class CarResource {
 	@PUT
 	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateCar(@PathParam("id") String id, Car car) {
+	@Operation(summary = "Update a car", responses = {
+			@ApiResponse(responseCode = "200", description = "The updated car", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
+			@ApiResponse(responseCode = "400", description = "Bad Request on the car update"),
+			@ApiResponse(responseCode = "404", description = "Car to update not found") })
+	public Response updateCar(
+			@Parameter(description = "The id of the car to be updated", required = true) @PathParam("id") String id,
+			@RequestBody(description = "The car data to be created", required = true, content = @Content(schema = @Schema(implementation = Car.class))) Car car) {
 		LOG.info("Entering updateCar(car) method..");
 		String logInfo;
 		Response response;
@@ -175,7 +208,11 @@ public class CarResource {
 	 */
 	@DELETE
 	@Path("{id}")
-	public Response deleteCar(@PathParam("id") String id) {
+	@Operation(summary = "Remove a car", responses = {
+			@ApiResponse(responseCode = "204", description = "No content. Car succesfully deleted." ),
+			@ApiResponse(responseCode = "400", description = "Bad Request on the car remove"),
+			@ApiResponse(responseCode = "404", description = "Car to remove not found") })
+	public Response deleteCar(@Parameter(description = "The id of the car to be deleted", required = true) @PathParam("id") String id) {
 		LOG.info("Entering deleteCar(id) with id = " + id + " ..");
 		String logInfo;
 		Response response;
