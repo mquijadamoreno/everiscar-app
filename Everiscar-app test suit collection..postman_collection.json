@@ -1,0 +1,1331 @@
+{
+	"info": {
+		"_postman_id": "66e26e3b-0924-4dad-9d31-d2b28a279c7f",
+		"name": "Everiscar-app test suit collection.",
+		"description": "Collection of test request against the everiscar-app rest api.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Initial POST requests.",
+			"item": [
+				{
+					"name": "Create car 001.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "18cdd944-58d3-4ef9-820c-41a5d305155b",
+								"exec": [
+									"pm.test(\"Successful POST request : 001\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"",
+									"var response = JSON.parse(responseBody);",
+									"pm.environment.set(\"uuid001\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"brand\": \"Ford\",\r\n\t\"country\" : \"USA\",\r\n\t\"registration\" : \"2019-12-01\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get car 001.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "af7f13fc-1341-45c0-ab44-9c6feee87300",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Created data from the car 001 was persisted correctly\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.country).to.eql('USA');",
+									"    pm.expect(jsonData.brand).to.eql('Ford');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{uuid001}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{uuid001}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create car 002.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa810240-6366-4759-888f-226cca5efc48",
+								"exec": [
+									"pm.test(\"Successful POST request : 002\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"",
+									"var response = JSON.parse(responseBody);",
+									"pm.environment.set(\"uuid002\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"brand\": \"Mercedes\",\r\n\t\"country\" : \"Germany\",\r\n\t\"registration\" : \"2019-12-02\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get car 002.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "90b06175-4a36-447a-aee7-da9a5689a137",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Created data from the car 002 was persisted correctly\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.country).to.eql('Germany');",
+									"    pm.expect(jsonData.brand).to.eql('Mercedes');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{uuid002}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{uuid002}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create car 003.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c1ac283e-31e3-4e6d-ab5a-a628a0ac6cb6",
+								"exec": [
+									"pm.test(\"Successful POST request : 003\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"",
+									"var response = JSON.parse(responseBody);",
+									"pm.environment.set(\"uuid003\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"brand\": \"Toyota\",\r\n\t\"country\" : \"Japan\",\r\n\t\"registration\": \"2019-02-13\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get car 003.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4b362d7b-ab07-45af-ba40-698db6531e91",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Created data from the car 003 was persisted correctly\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.country).to.eql('Japan');",
+									"    pm.expect(jsonData.brand).to.eql('Toyota');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{uuid003}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{uuid003}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create car 004.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "218a355a-97d3-41cc-9195-e981488ace73",
+								"exec": [
+									"pm.test(\"Successful POST request : 004\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"",
+									"var response = JSON.parse(responseBody);",
+									"pm.environment.set(\"uuid004\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"brand\": \"Honda\",\r\n\t\"country\" : \"Japan\",\r\n\t\"registration\" : \"2019-12-04\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get car 004.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7194d9af-c5b7-4df7-bc04-efae3746db16",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Created data from the car 004 was persisted correctly\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.country).to.eql('Japan');",
+									"    pm.expect(jsonData.brand).to.eql('Honda');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{uuid004}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{uuid004}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create car 005.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "123da1ce-5109-4d75-bae8-cf29dea392f9",
+								"exec": [
+									"pm.test(\"Successful POST request : 005\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"",
+									"var response = JSON.parse(responseBody);",
+									"pm.environment.set(\"uuid005\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"brand\": \"Peugeot\",\r\n\t\"country\" : \"France\",\r\n\t\"registration\" : \"2019-12-05\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get car 005.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fac263ac-1371-42fd-b028-f46a561d1226",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Created data from the car 005 was persisted correctly\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.country).to.eql('France');",
+									"    pm.expect(jsonData.brand).to.eql('Peugeot');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{uuid005}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{uuid005}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create car 006.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26a240a6-062b-483d-8ef6-8ad2b7e04c08",
+								"exec": [
+									"pm.test(\"Successful POST request : 006\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"",
+									"var response = JSON.parse(responseBody);",
+									"pm.environment.set(\"uuid006\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"brand\": \"SEAT\",\r\n\t\"country\" : \"Spain\",\r\n\t\"registration\" : \"2019-12-06\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get car 006.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "06431f0b-fa4f-4ff5-8a74-15d685db2004",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Created data from the car 005 was persisted correctly\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.country).to.eql('Spain');",
+									"    pm.expect(jsonData.brand).to.eql('SEAT');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{uuid006}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{uuid006}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update and Delete requests.",
+			"item": [
+				{
+					"name": "Update car 001.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5193c931-d04a-4d35-97fb-f3356d87a253",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Updated data from the car 001 was updated correctly\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.country).to.eql('USAUpdated');",
+									"    pm.expect(jsonData.brand).to.eql('FordUpdated');",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a12e4968-0a1c-4dd6-b5b2-2c3cef039001",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"id\": \"{{uuid001}}\",\r\n\t\"brand\": \"FordUpdated\",\r\n\t\"country\" : \"USAUpdated\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{uuid001}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{uuid001}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update car 002.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5e648aa5-e168-4750-baf2-2ec3fc4daca9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Updated data from the car 002 was updated correctly\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.country).to.eql('GermanyUpdated');",
+									"    pm.expect(jsonData.brand).to.eql('MercedesUpdated');",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"id\": \"{{uuid002}}\",\r\n\t\"brand\": \"MercedesUpdated\",\r\n\t\"country\" : \"GermanyUpdated\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{uuid002}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{uuid002}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update car 003.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "86e78be7-ed41-4ec7-a0fb-90bbac382bda",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Updated data from the car 003 was updated correctly\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.country).to.eql('JapanUpdated');",
+									"    pm.expect(jsonData.brand).to.eql('ToyotaUpdated');",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"id\": \"{{uuid003}}\",\r\n\t\"brand\": \"ToyotaUpdated\",\r\n\t\"country\" : \"JapanUpdated\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{uuid003}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{uuid003}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get collection size pre delete.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "99404431-64fd-416d-88eb-c487a712c0a9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Collection Size test\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.eql(6);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/count",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"count"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete car 006.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a51805b1-f8a3-4f2d-bbe1-d57457a82d58",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{uuid006}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{uuid006}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete car 005.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6092237d-ca84-4ff7-831a-1bb51394eedb",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{uuid005}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{uuid005}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get collection size post delete.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7eb24ce3-e22e-4eb2-bdb8-e62c450b8496",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Collection size test\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.eql(4);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/count",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"count"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bad and Not Found Requests.",
+			"item": [
+				{
+					"name": "Get car 00X invalid id.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "322ddaf1-96b7-487e-bcb3-3eda1f947694",
+								"exec": [
+									"pm.test(\"Failed POST request : 00X, car not found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ac8ad39f-f449-4f1d-9c23-f928296a215f",
+								"exec": [
+									"pm.globals.set(\"mock_id\", \"aabbcc\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{mock_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{mock_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create car 00X Bad Request, invalid id.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a6068bce-816d-4f53-950b-66716ffbd1ce",
+								"exec": [
+									"pm.test(\"Failed POST request : 00X, id value should not be provided\", function () {",
+									"     pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"id\" : \"mock_id\",\r\n\t\"brand\": \"Honda\",\r\n\t\"country\" : \"Japan\",\r\n\t\"registration\" : \"2019-12-04\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create car 00X Bad Request, invalid Body.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "88d32ff0-575a-4499-ac16-27dd032aa592",
+								"exec": [
+									"pm.test(\"Failed POST request, body is empty : 00X\", function () {",
+									"     pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete car 00X invalid id.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "76af1577-2086-4613-ae75-2f6b51b866d8",
+								"exec": [
+									"pm.test(\"Failed DELETE request : 00X, car not found\", function () {",
+									"     pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d177fcae-7732-4582-826c-661a97f57563",
+								"exec": [
+									"pm.globals.set(\"mock_id\", \"aabbcc\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{mock_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{mock_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update car 00X invalid body.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "13d79652-fc73-4d36-a2e6-1fd7cfbf6d77",
+								"exec": [
+									"pm.globals.set(\"mock_id\", \"aabbcc\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "184df0e3-63ac-4acb-bff3-a234c475751f",
+								"exec": [
+									"pm.test(\"Failed UPDATE request : 00X, body is empty\", function () {",
+									"     pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{mock_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{mock_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update car 00X invalid id.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a539d7a7-9194-4da5-9562-159291fa4eef",
+								"exec": [
+									"pm.globals.set(\"mock_id\", \"aabbcc\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "cf8a0dd3-7a7c-425a-bc70-b47c743d73bf",
+								"exec": [
+									"pm.test(\"Failed UPDATE request : 00X, body's id doesnt match with URL's id or is null\", function () {",
+									"     pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"id\" : \"\",\r\n\t\"brand\": \"Honda\",\r\n\t\"country\" : \"Japan\",\r\n\t\"registration\" : \"2019-12-04\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{mock_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{mock_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update car 00X invalid id, Not Found.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e3112989-3564-4e3b-910d-38b16024cdf5",
+								"exec": [
+									"pm.globals.set(\"mock_id\", \"aabbcc\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ce929cbb-6944-45b9-bbf3-9f428fbfbe52",
+								"exec": [
+									"pm.test(\"Failed UPDATE request : 00X, car not found\", function () {",
+									"     pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"id\" : \"{{mock_id}}\",\r\n\t\"brand\": \"Honda\",\r\n\t\"country\" : \"Japan\",\r\n\t\"registration\" : \"2019-12-04\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/car-app/api/v1/cars/{{mock_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"car-app",
+								"api",
+								"v1",
+								"cars",
+								"{{mock_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
